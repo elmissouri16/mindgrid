@@ -28,7 +28,7 @@ class _NotePageState extends State<NotePage> {
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: () {
-              final contents = _controller.document.toDelta();
+              final contents = _controller.document.toDelta().toJson();
               print(contents); // For testing
             },
           ),
