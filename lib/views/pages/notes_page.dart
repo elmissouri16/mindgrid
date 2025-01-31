@@ -1,5 +1,8 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mindgrid/core/router.dart';
@@ -24,11 +27,9 @@ class NotesPage extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            // context.pushNamed(Routes.note);
-            provider.insertNote(
-              'title',
-              'content',
-            );
+            context.pushNamed(Routes.note);
+            // provider.insertNote('some title',
+            //     'batata dsdsds ${DateTime.now().toIso8601String()}');
           },
           child: const Icon(Icons.add),
         ),
@@ -78,7 +79,9 @@ class NotesPage extends ConsumerWidget {
                           //   ),
                           // ),
                           Text(
-                            snapshot.data![index].content,
+                            Document.fromJson(
+                                    jsonDecode(snapshot.data![index].content))
+                                .toPlainText(),
                             style: const TextStyle(fontSize: 12),
                             maxLines: 2,
                             overflow: TextOverflow.fade,
