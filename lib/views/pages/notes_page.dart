@@ -16,7 +16,7 @@ class NotesPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final provider = ref.watch(dbProviderProvider);
+    final provider = ref.watch(dbProvider);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -28,8 +28,6 @@ class NotesPage extends ConsumerWidget {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             context.pushNamed(Routes.note);
-            // provider.insertNote('some title',
-            //     'batata dsdsds ${DateTime.now().toIso8601String()}');
           },
           child: const Icon(Icons.add),
         ),
@@ -48,45 +46,43 @@ class NotesPage extends ConsumerWidget {
                   ),
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
-                    return ShadCard(
-                      // shadows: [
-                      //   BoxShadow(
-                      //     color: isDark
-                      //         ? Colors.white.withOpacity(0.1)
-                      //         : Colors.black.withOpacity(0.1),
-                      //     blurRadius: 10,
-                      //     spreadRadius: 1,
-                      //   ),
-                      // ],
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            snapshot.data![index].title,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
+                    return GestureDetector(
+                      onTap: () {
+                        context.pushNamed(Routes.noteViewer, queryParameters: {
+                          'noteId': snapshot.data![index].id.toString()
+                        });
+                      },
+                      child: ShadCard(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              snapshot.data![index].title,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          // Expanded(
-                          //   child: Text(
-                          //     demoNotes[index].content,
-                          //     style: const TextStyle(fontSize: 12),
-                          //     maxLines: 4,
-                          //     overflow: TextOverflow.fade,
-                          //   ),
-                          // ),
-                          Text(
-                            Document.fromJson(
-                                    jsonDecode(snapshot.data![index].content))
-                                .toPlainText(),
-                            style: const TextStyle(fontSize: 12),
-                            maxLines: 2,
-                            overflow: TextOverflow.fade,
-                          ),
-                        ],
+                            // Expanded(
+                            //   child: Text(
+                            //     demoNotes[index].content,
+                            //     style: const TextStyle(fontSize: 12),
+                            //     maxLines: 4,
+                            //     overflow: TextOverflow.fade,
+                            //   ),
+                            // ),
+                            Text(
+                              Document.fromJson(
+                                      jsonDecode(snapshot.data![index].content))
+                                  .toPlainText(),
+                              style: const TextStyle(fontSize: 12),
+                              maxLines: 2,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ],
+                        ),
                       ),
                     );
                   },

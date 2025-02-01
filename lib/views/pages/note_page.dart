@@ -27,7 +27,7 @@ class _NotePageState extends ConsumerState<NotePage> {
   Widget build(BuildContext context) {
     return Consumer(
       builder: (context, ref, child) {
-        final provider = ref.read(dbProviderProvider);
+        final provider = ref.read(dbProvider);
         return Scaffold(
           appBar: AppBar(
             title: const Text('New Note'),

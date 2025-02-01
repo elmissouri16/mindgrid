@@ -40,4 +40,7 @@ class AppDatabase extends _$AppDatabase {
   Future<void> deleteNote(Insertable<NotesListData> note) =>
       delete(notesList).delete(note);
   Stream<List<NotesListData>> watchAllNotes() => select(notesList).watch();
+  Stream<NotesListData?> watchNoteById(int id) =>
+      (select(notesList)..where((tbl) => tbl.id.equals(id))).watchSingle();
+  
 }
