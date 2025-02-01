@@ -27,7 +27,8 @@ class NotesPage extends ConsumerWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            context.pushNamed(Routes.note);
+            context
+                .pushNamed(Routes.note, queryParameters: {'isEditing': 'true'});
           },
           child: const Icon(Icons.add),
         ),
@@ -48,9 +49,15 @@ class NotesPage extends ConsumerWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        context.pushNamed(Routes.noteViewer, queryParameters: {
-                          'noteId': snapshot.data![index].id.toString()
-                        });
+                        context.pushNamed(
+                          Routes.note,
+                          queryParameters: {
+                            'isEditing': 'false',
+                            'noteId': snapshot.data![index].id.toString(),
+                            'title': snapshot.data![index].title,
+                            'content': snapshot.data![index].content,
+                          },
+                        );
                       },
                       child: ShadCard(
                         child: Column(
@@ -65,14 +72,6 @@ class NotesPage extends ConsumerWidget {
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
-                            // Expanded(
-                            //   child: Text(
-                            //     demoNotes[index].content,
-                            //     style: const TextStyle(fontSize: 12),
-                            //     maxLines: 4,
-                            //     overflow: TextOverflow.fade,
-                            //   ),
-                            // ),
                             Text(
                               Document.fromJson(
                                       jsonDecode(snapshot.data![index].content))
